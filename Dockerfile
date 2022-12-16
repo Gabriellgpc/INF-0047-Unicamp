@@ -52,6 +52,7 @@ RUN pip --no-cache-dir install  numpy==1.22.2\
                                 uvicorn[standard]==0.15.0\
                                 "uvicorn[standard]" gunicorn\
                                 tensorflow-text==2.8.1\
+                                transformers[sentencepiece] \
                                 email-validator
 
 

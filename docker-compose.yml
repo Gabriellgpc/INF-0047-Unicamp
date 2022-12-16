@@ -1,21 +1,17 @@
 # @Author: Luis Condados
 # @Date:   2022-02-07 21:48:07
-# @Last Modified by:   Luis Condados
-# @Last Modified time: 2022-02-24 00:56:15
+# @Last Modified by:   Condados
+# @Last Modified time: 2022-12-16 16:25:38
 
-version: '3.9'
+# version: '3.9'
 
 services:
   fastapi:
-    image: bert-with-fastapi:latest
+    image: t5-translation-fastapi:latest
     build: .
     ports:
       - 8000:8000
-    # deploy:
-    # For more information: https://docs.docker.com/compose/gpu-support/
-      # resources:
-      #   reservations:
-      #     devices:
-      #       - driver: nvidia
-      #         capabilities: [gpu]
     command: serve
+
+# docker build . -t t5-translation-fastapi:latest
+# docker run -it --rm --p 8000:8000 t5-translation-fastapi:latest serve
