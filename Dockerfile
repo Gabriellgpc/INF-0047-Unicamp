@@ -6,7 +6,9 @@
 # This is a Python 3 image that uses the nginx, gunicorn, fast api stack
 # for serving inferences in a stable way.
 
-FROM tensorflow/tensorflow:2.10.0
+# FROM tensorflow/tensorflow:2.10.0
+FROM python:3.6.15-slim-buster
+# docker pull python:3.6.15-slim-buster
 
 LABEL MAINTAINER Luis Condados condadoslgpc@gmail.com
 
@@ -45,13 +47,13 @@ RUN apt-get update --fix-missing && apt-get install -y \
 RUN pip install --upgrade pip
 
 # Install pip packages
-RUN pip --no-cache-dir install  numpy==1.22.2\
-                                idna==3.0\
-                                gunicorn==20.1.0\
-                                fastapi==0.70.0\
-                                uvicorn[standard]==0.15.0\
+RUN pip --no-cache-dir install  numpy\
+                                idna\
+                                gunicorn\
+                                fastapi\
+                                uvicorn[standard]\
                                 "uvicorn[standard]" gunicorn\
-                                tensorflow-text==2.8.1\
+                                tensorflow-text\
                                 transformers[sentencepiece] \
                                 email-validator
 
