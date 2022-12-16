@@ -5,8 +5,8 @@
 # @Last Modified time: 2022-12-16 15:58:09
 
 from pydantic import BaseModel
-from typing import Optional
-from typing import List
+# from typing import Optional
+# from typing import List
 
 class RequestTemplate(BaseModel):
     sentence: str

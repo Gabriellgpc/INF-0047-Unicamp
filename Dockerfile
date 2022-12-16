@@ -53,7 +53,6 @@ RUN pip --no-cache-dir install  numpy\
                                 fastapi\
                                 uvicorn[standard]\
                                 "uvicorn[standard]" gunicorn\
-                                tensorflow-text\
                                 transformers[sentencepiece] \
                                 email-validator
 
