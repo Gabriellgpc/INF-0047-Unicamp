@@ -16,7 +16,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update --fix-missing && apt-get install -y \
     # to avoid cv2 import error
-    # ffmpeg libsm6 libxext6     \
+    ffmpeg libsm6 libxext6     \
     wget bzip2 ca-certificates \
     cmake build-essential      \
     pkg-config                 \
