@@ -26,11 +26,7 @@ cpu_count = multiprocessing.cpu_count()
 model_server_timeout = os.environ.get('MODEL_SERVER_TIMEOUT', 60)
 model_server_workers = int(os.environ.get('MODEL_SERVER_WORKERS', cpu_count))
 
-def sigterm_handler(nginx_pid, gunicorn_pid):
-    try:
-        os.kill(nginx_pid, signal.SIGQUIT)
-    except OSError:
-        pass
+def sigterm_handler(gunicorn_pid):
     try:
         os.kill(gunicorn_pid, signal.SIGTERM)
     except OSError:
@@ -43,11 +39,7 @@ def start_server():
     print(log_msg)
 
 
-    # link the log streams to stdout/err so they will be logged to the container logs
-    subprocess.check_call(['ln', '-sf', '/dev/stdout', '/var/log/nginx/access.log'])
-    subprocess.check_call(['ln', '-sf', '/dev/stderr', '/var/log/nginx/error.log'])
-
-    nginx = subprocess.Popen(['nginx', '-c', '/opt/program/nginx.conf'])
+    # nginx = subprocess.Popen(['nginx', '-c', '/opt/program/nginx.conf'])
     gunicorn = subprocess.Popen(['gunicorn',
                                  '--timeout', str(model_server_timeout),
                                  '-k', 'sync',
@@ -58,17 +50,17 @@ def start_server():
                                  '--bind', '0.0.0.0:8000'
                                  ])
 
-    signal.signal(signal.SIGTERM, lambda a, b: sigterm_handler(nginx.pid, gunicorn.pid))
+    signal.signal(signal.SIGTERM, lambda a, b: sigterm_handler(gunicorn.pid))
 
     # If either subprocess exits, so do we.
-    pids = set([nginx.pid, gunicorn.pid])
+    pids = set([gunicorn.pid])
     while True:
         pid, _ = os.wait()
         if pid in pids:
             break
 
     print('Inference server exiting')
-    sigterm_handler(nginx.pid, gunicorn.pid)
+    sigterm_handler(gunicorn.pid)
 
 # The main routine just invokes the start function.
 
