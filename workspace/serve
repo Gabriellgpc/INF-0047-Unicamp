@@ -19,12 +19,10 @@ import signal
 import subprocess
 import sys
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 cpu_count = multiprocessing.cpu_count()
 
 model_server_timeout = os.environ.get('MODEL_SERVER_TIMEOUT', 60)
-model_server_workers = int(os.environ.get('MODEL_SERVER_WORKERS', cpu_count))
+model_server_workers = int(os.environ.get('MODEL_SERVER_WORKERS', cpu_count)) + 1
 
 def sigterm_handler(gunicorn_pid):
     try:
@@ -38,8 +36,6 @@ def start_server():
     log_msg = 'Starting the inference server with {} workers.'.format(model_server_workers)
     print(log_msg)
 
-
-    # nginx = subprocess.Popen(['nginx', '-c', '/opt/program/nginx.conf'])
     gunicorn = subprocess.Popen(['gunicorn',
                                  '--timeout', str(model_server_timeout),
                                  '-k', 'sync',

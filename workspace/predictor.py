@@ -5,16 +5,15 @@
 # @Last Modified time: 2022-12-16 15:59:04
 # Contact: condadoslgpc@gmail.com
 
+from transformers import pipeline
 from fastapi import FastAPI
 from source.base_classes import *
 
-title='T5 Machine Translation'
+title='T5 Machine Translation - Machine 1'
 description='''
-
+Rest API service for English to Germany translation.
 '''
 version='v1.0'
-# contact = {'name': 'Luis Condados', 'email': 'condadoslgpc@gmail.com'}
-# license_info= {'name': 'All Rights Reserved'}
 # The fastapi app for serving predictions
 app = FastAPI(title=title,
               description=description,
@@ -35,6 +34,8 @@ def ping():
 def invocation(request: RequestTemplate):
 
     sentence = request.sentence
-    # model inference ...
-    response = {'translation':sentence}
+    # model inference
+    translator = pipeline("translation_en_to_de", model="Helsinki-NLP/opus-mt-en-de")
+    outputs = translator(sentence, clean_up_tokenization_spaces=True)
+    response = {'translation':outputs[0]['translation_text']}
     return response
