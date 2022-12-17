@@ -9,7 +9,9 @@ from transformers import pipeline
 from fastapi import FastAPI
 from source.base_classes import *
 
-title='T5 Machine Translation - Machine 1'
+MACHINE_NAME='Machine 1'
+
+title=f'T5 Machine Translation - {MACHINE_NAME}'
 description='''
 Rest API service for English to Germany translation.
 '''
@@ -37,5 +39,6 @@ def invocation(request: RequestTemplate):
     # model inference
     translator = pipeline("translation_en_to_de", model="Helsinki-NLP/opus-mt-en-de")
     outputs = translator(sentence, clean_up_tokenization_spaces=True)
-    response = {'translation':outputs[0]['translation_text']}
+    response = {'translation':outputs[0]['translation_text'],
+                'from': MACHINE_NAME}
     return response
